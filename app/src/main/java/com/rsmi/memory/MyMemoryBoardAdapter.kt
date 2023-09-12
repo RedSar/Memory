@@ -1,20 +1,30 @@
 package com.rsmi.memory
 
 import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class MyMemoryBoardAdapter(private val context: Context, private val numPieces: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        TODO("Not yet implemented")
+class MyMemoryBoardAdapter(private val context: Context, private val numPieces: Int) :
+    RecyclerView.Adapter<MyMemoryBoardAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val itemView:View  = LayoutInflater.from(context).inflate(R.layout.memory_card,parent, false)
+        return ViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+    override fun getItemCount(): Int = numPieces
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(position)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        fun bind(position: Int) {
+
+        }
+
     }
 
 }
+
+
