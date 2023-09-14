@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rsmi.memory.models.BoardSize
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var rvBoard : RecyclerView
     private lateinit var tvMoves : TextView
     private lateinit var tvNumPairs : TextView
+    private lateinit var boardSize : BoardSize
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,9 +24,11 @@ class MainActivity : AppCompatActivity() {
         tvMoves = findViewById(R.id.tvMoves)
         tvNumPairs = findViewById(R.id.tvPairs)
 
-        rvBoard.adapter = MyMemoryBoardAdapter(this, 8)
+        boardSize = BoardSize.HARD
+
+        rvBoard.adapter = MyMemoryBoardAdapter(this, boardSize)
         rvBoard.setHasFixedSize(true)
-        rvBoard.layoutManager = GridLayoutManager(this, 2)
+        rvBoard.layoutManager = GridLayoutManager(this, boardSize.getNumCol())
 
     }
 }

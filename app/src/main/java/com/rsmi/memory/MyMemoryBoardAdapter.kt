@@ -10,9 +10,10 @@ import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
+import com.rsmi.memory.models.BoardSize
 import kotlin.math.min
 
-class MyMemoryBoardAdapter(private val context: Context, private val numPieces: Int) :
+class MyMemoryBoardAdapter(private val context: Context, private val boardSize: BoardSize) :
     RecyclerView.Adapter<MyMemoryBoardAdapter.ViewHolder>() {
 
     companion object {
@@ -21,8 +22,8 @@ class MyMemoryBoardAdapter(private val context: Context, private val numPieces: 
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        val cardWith: Int = parent.width/2 - 2 * MARGIN_SIZE
-        val cardHeight: Int = parent.height/4 - 2 * MARGIN_SIZE
+        val cardWith: Int = parent.width/boardSize.getNumCol() - 2 * MARGIN_SIZE
+        val cardHeight: Int = parent.height/boardSize.getNumLines() - 2 * MARGIN_SIZE
         val cardDimension: Int = min(cardHeight,cardWith)
 
         val itemView:View  = LayoutInflater.from(context).inflate(R.layout.memory_card,parent, false)
@@ -35,7 +36,7 @@ class MyMemoryBoardAdapter(private val context: Context, private val numPieces: 
         return ViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = numPieces
+    override fun getItemCount(): Int = boardSize.getNumPairs() * 2
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
     }
