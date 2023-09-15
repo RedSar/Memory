@@ -11,13 +11,19 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
 import com.rsmi.memory.models.BoardSize
+import com.rsmi.memory.models.Card
 import kotlin.math.min
 
-class MyMemoryBoardAdapter(private val context: Context, private val boardSize: BoardSize) :
+class MyMemoryBoardAdapter(
+    private val context: Context,
+    private val boardSize: BoardSize,
+    private val cards: List<Card>,
+    private val onClickCardListener: CardClickListener
+) :
     RecyclerView.Adapter<MyMemoryBoardAdapter.ViewHolder>() {
 
     companion object {
-        private const val MARGIN_SIZE = 10
+        private const val MARGIN_SIZE = 20
         private const val TAG = "MyMemoryBoardAdapter"
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,11 +47,19 @@ class MyMemoryBoardAdapter(private val context: Context, private val boardSize: 
         holder.bind(position)
     }
 
+    interface  CardClickListener {
+        fun onClickCard(position: Int)
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
         fun bind(position: Int) {
+            val selectedCard = cards[position]
+            imageButton.setImageResource(if (selectedCard.isFaceUp) selectedCard.id else R.drawable.ic_launcher_background)
             imageButton.setOnClickListener{
                 Log.i(TAG, "Image clicked on position: $position")
+                onClickCardListener.onClickCard(position)
+
             }
         }
 
