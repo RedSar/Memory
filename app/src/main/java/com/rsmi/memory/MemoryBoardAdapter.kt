@@ -64,7 +64,7 @@ class MemoryBoardAdapter(
             imageButton.setImageResource(if (selectedCard.isFaceUp) selectedCard.id else R.drawable.ic_launcher_background)
 
             imageButton.alpha = if (selectedCard.isMatched) .4f else 1.0f
-            val colorStateList: ColorStateList? =
+           val colorStateList: ColorStateList? =
                 if (selectedCard.isMatched) ContextCompat.getColorStateList(
                     context,
                     R.color.color_gray

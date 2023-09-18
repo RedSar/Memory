@@ -29,7 +29,6 @@ class MemoryGame(boardSize: BoardSize) {
         var matchFound = false
         Log.i(TAG, "flipCard block positionOfSingleSelectedCard = $positionOfSingleSelectedCard")
 
-        // restore cards
         if (positionOfSingleSelectedCard == null) {
             restoreCards()
             positionOfSingleSelectedCard = position
@@ -40,7 +39,9 @@ class MemoryGame(boardSize: BoardSize) {
             positionOfSingleSelectedCard = null
             Log.i(TAG, "flipCard -> 'else block' positionOfSingleSelectedCard = $positionOfSingleSelectedCard")
         }
-        card.isFaceUp = !card.isFaceUp
+
+        card.isFaceUp = !card.isFaceUp // Flip the selected Card
+
         return matchFound
     }
 

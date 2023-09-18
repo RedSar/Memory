@@ -11,10 +11,11 @@ enum class BoardSize (val numCards: Int){
 
     fun getNumCol(): Int {
         return when (this) {
-            EASY -> 2
-            MEDIUM -> 3
-            HARD -> 4
+            EASY -> numCards/4
+            else -> numCards/6
         }
+
+
     }
 
     fun getNumLines(): Int {
