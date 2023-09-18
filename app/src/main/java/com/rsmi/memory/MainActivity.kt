@@ -8,16 +8,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rsmi.memory.models.BoardSize
-import com.rsmi.memory.models.Card
 import com.rsmi.memory.models.MemoryGame
-import com.rsmi.memory.utils.DEFAULT_CARDS
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var rvBoard : RecyclerView
     private lateinit var tvMoves : TextView
     private lateinit var tvNumPairs : TextView
-    private  var boardSize : BoardSize = BoardSize.MEDIUM
+
+    private  var boardSize : BoardSize = BoardSize.EASY
+
+    private lateinit var memoryGame: MemoryGame
+    private lateinit var adapter : MemoryBoardAdapter
 
     companion object{
         const val TAG = "MainActivity"
@@ -32,16 +34,23 @@ class MainActivity : AppCompatActivity() {
         tvMoves = findViewById(R.id.tvMoves)
         tvNumPairs = findViewById(R.id.tvPairs)
 
-        val memoryGame:MemoryGame = MemoryGame(boardSize)
+        memoryGame = MemoryGame(boardSize)
 
-        rvBoard.adapter = MyMemoryBoardAdapter(this, boardSize, memoryGame.cards, object : MyMemoryBoardAdapter.CardClickListener{
+        adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object : MemoryBoardAdapter.CardClickListener{
             override fun onClickCard(position: Int) {
-                Log.i(TAG, "Card Clicked in position : $position")
+                updateGameWithFlip(position)
             }
 
         })
+
+        rvBoard.adapter = adapter
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getNumCol())
 
+    }
+
+    private fun updateGameWithFlip(position: Int) {
+        memoryGame.flipCard(position)
+        adapter.notifyDataSetChanged()
     }
 }
