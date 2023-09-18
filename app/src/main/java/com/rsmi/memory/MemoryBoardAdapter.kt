@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.rsmi.memory.models.BoardSize
 import com.rsmi.memory.models.Card
 import kotlin.math.min
@@ -78,6 +79,11 @@ class MemoryBoardAdapter(
                 onClickCardListener.onClickCard(position)
 
             }
+        }
+
+         fun showSnackbar(view: View) {
+            val snackbar = Snackbar.make(view, "This is a snackbar message.", Snackbar.LENGTH_SHORT)
+            snackbar.show()
         }
 
     }

@@ -3,7 +3,7 @@ package com.rsmi.memory.models
 import android.util.Log
 import com.rsmi.memory.utils.DEFAULT_CARDS
 
-class MemoryGame(boardSize: BoardSize) {
+class MemoryGame(private val boardSize: BoardSize) {
 
     private var positionOfSingleSelectedCard: Int? =
         null // storing the position of the card previously selected
@@ -60,5 +60,13 @@ class MemoryGame(boardSize: BoardSize) {
         for (card in cards) {
             if (!card.isMatched) card.isFaceUp = false
         }
+    }
+
+    fun haveWonGame(): Boolean {
+        return (numPairsFound == boardSize.getNumPairs())
+    }
+
+    fun isCardFaceUp(position: Int): Boolean {
+        return cards[position].isFaceUp
     }
 }
