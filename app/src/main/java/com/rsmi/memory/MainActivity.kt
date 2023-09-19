@@ -3,6 +3,7 @@ package com.rsmi.memory
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -61,12 +62,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (memoryGame.isCardFaceUp(position)) {
-            Snackbar.make(clRoot,"Invalid move" , Snackbar.LENGTH_LONG).show()
+            Snackbar.make(clRoot,"Invalid move" , Snackbar.LENGTH_SHORT).show()
 
             return
         }
 
-        memoryGame.flipCard(position)
+        if (memoryGame.flipCard(position)) {
+            Log.i(TAG, "--> Number of pairs found: ${memoryGame.numPairsFound}")
+
+            tvNumPairs.text = "${memoryGame.numPairsFound} / ${boardSize.getNumPairs()}"
+
+        }
+
+        tvMoves.text = "Moves: ${memoryGame.getNumMoves()}"
+        if (memoryGame.haveWonGame()) Snackbar.make(clRoot, "Congratulations , you won !!",Snackbar.LENGTH_LONG).show()
         adapter.notifyDataSetChanged()
     }
 
