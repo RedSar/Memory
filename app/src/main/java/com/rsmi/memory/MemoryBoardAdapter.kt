@@ -81,10 +81,7 @@ class MemoryBoardAdapter(
             }
         }
 
-         fun showSnackbar(view: View) {
-            val snackbar = Snackbar.make(view, "This is a snackbar message.", Snackbar.LENGTH_SHORT)
-            snackbar.show()
-        }
+
 
     }
 

@@ -1,12 +1,15 @@
 package com.rsmi.memory
 
+import android.animation.ArgbEvaluator
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -20,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvMoves : TextView
     private lateinit var tvNumPairs : TextView
 
-    private  var boardSize : BoardSize = BoardSize.EASY
+    private  var boardSize : BoardSize = BoardSize.MEDIUM
 
     private lateinit var memoryGame: MemoryGame
     private lateinit var adapter : MemoryBoardAdapter
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         const val TAG = "MainActivity"
     }
 
-    @SuppressLint("MissingInflatedId")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,6 +41,9 @@ class MainActivity : AppCompatActivity() {
         rvBoard = findViewById(R.id.rvBoard)
         tvMoves = findViewById(R.id.tvMoves)
         tvNumPairs = findViewById(R.id.tvPairs)
+
+        tvNumPairs.text = "Pairs: 0/${boardSize.getNumPairs()}"
+        tvNumPairs.setTextColor(ContextCompat.getColor(this,R.color.color_progress_none) as Int)
 
         memoryGame = MemoryGame(boardSize)
 
@@ -52,6 +58,11 @@ class MainActivity : AppCompatActivity() {
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getNumCol())
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
     }
 
     private fun updateGameWithFlip(position: Int) {
@@ -70,11 +81,21 @@ class MainActivity : AppCompatActivity() {
         if (memoryGame.flipCard(position)) {
             Log.i(TAG, "--> Number of pairs found: ${memoryGame.numPairsFound}")
 
-            tvNumPairs.text = "${memoryGame.numPairsFound} / ${boardSize.getNumPairs()}"
+            tvNumPairs.text = "Pairs: ${memoryGame.numPairsFound} / ${boardSize.getNumPairs()}"
+            //Change the text color
+            val color = ArgbEvaluator().evaluate(memoryGame.numPairsFound.toFloat() / boardSize.getNumPairs(),
+                ContextCompat.getColor(this, R.color.color_progress_none),
+                ContextCompat.getColor(this, R.color.color_progress_full)
+            )
+
+            tvNumPairs.setTextColor(color as Int)
 
         }
 
+
+
         tvMoves.text = "Moves: ${memoryGame.getNumMoves()}"
+
         if (memoryGame.haveWonGame()) Snackbar.make(clRoot, "Congratulations , you won !!",Snackbar.LENGTH_LONG).show()
         adapter.notifyDataSetChanged()
     }
